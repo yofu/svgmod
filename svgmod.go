@@ -21,7 +21,7 @@ func tmpcopy(fn string) (*os.File, error) {
 		return nil, err
 	}
 	dir := filepath.Dir(fn)
-	t, err := ioutil.TempFile(dir, fmt.Sprintf("tmp_%s_", fn))
+	t, err := ioutil.TempFile(dir, fmt.Sprintf("tmp_%s_", filepath.Base(fn)))
 	if err != nil {
 		t.Close()
 		return nil, err
