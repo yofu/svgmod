@@ -67,7 +67,7 @@ func parseScript(fn string) ([]*svgmod.Command, error) {
 		commands = append(commands, c)
 		nc++
 	}
-	return commands[:nc], nil
+	return commands[:nc], s.Err()
 }
 
 func main() {
