@@ -9,9 +9,9 @@ import (
 )
 
 type Command struct {
-	Name     string
+	Name      string
 	Statement string
-	function func(*os.File, *os.File) error
+	function  func(*os.File, *os.File) error
 }
 
 func (c *Command) Exec(inp, otp *os.File) error {
