@@ -62,7 +62,7 @@ var (
 	}
 )
 
-func tex2svg(txt string) string {
+func tex2svg(txt, font string) string {
 	rtn := []string{}
 	tmp := []rune{}
 	mode := NORMAL
@@ -109,7 +109,7 @@ func tex2svg(txt string) string {
 			}
 		}
 	}
-	return fmt.Sprintf(`<tspan style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:FreeSerif;-inkscape-font-specification:FreeSerif">%s</tspan>`, strings.Join(rtn, ""))
+	return fmt.Sprintf(`<tspan style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:%s;-inkscape-font-specification:%s">%s</tspan>`, font, font, strings.Join(rtn, ""))
 }
 
 

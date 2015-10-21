@@ -31,12 +31,12 @@ func tmpcopy(fn string) (*os.File, error) {
 	return t, nil
 }
 
-func parseCommand(e string) ([]*svgmod.Command, error) {
+func parseCommand(e, font string) ([]*svgmod.Command, error) {
 	ctxt := strings.Split(e, ";")
 	commands := make([]*svgmod.Command, len(ctxt))
 	nc := 0
 	for _, ct := range ctxt {
-		c, err := svgmod.Parse(strings.TrimLeft(ct, " "))
+		c, err := svgmod.Parse(strings.TrimLeft(ct, " "), font)
 		if err != nil {
 			return commands, err
 		}
@@ -46,7 +46,7 @@ func parseCommand(e string) ([]*svgmod.Command, error) {
 	return commands[:nc], nil
 }
 
-func parseScript(fn string) ([]*svgmod.Command, error) {
+func parseScript(fn, font string) ([]*svgmod.Command, error) {
 	f, err := os.Open(fn)
 	defer f.Close()
 	if err != nil {
@@ -60,7 +60,7 @@ func parseScript(fn string) ([]*svgmod.Command, error) {
 		if strings.HasPrefix(ct, "#") {
 			continue
 		}
-		c, err := svgmod.Parse(strings.TrimLeft(ct, " "))
+		c, err := svgmod.Parse(strings.TrimLeft(ct, " "), font)
 		if err != nil {
 			return commands, err
 		}
@@ -75,6 +75,7 @@ func main() {
 	s := flag.String("s", "", "script file name")
 	rmtmp := flag.Bool("rmtmp", false, "remove tmp file")
 	verbose := flag.Bool("v", false, "verbose")
+	fontfamily := flag.String("ff", "", "font family")
 
 	flag.Parse()
 
@@ -104,16 +105,26 @@ func main() {
 		os.Exit(1)
 	}
 
+	var font string
+	switch strings.ToLower(*fontfamily) {
+	default:
+		font="FreeSerif"
+	case "serif", "mincho":
+		font="FreeSerif"
+	case "sans", "gothic":
+		font="FreeSans"
+	}
+
 	var commands []*svgmod.Command
 	if *e != "" {
-		cs, err := parseCommand(*e)
+		cs, err := parseCommand(*e, font)
 		if err != nil {
 			log.Fatal(err)
 			os.Exit(1)
 		}
 		commands = cs
 	} else if *s != "" {
-		cs, err := parseScript(*s)
+		cs, err := parseScript(*s, font)
 		if err != nil {
 			log.Fatal(err)
 			os.Exit(1)

@@ -11,14 +11,14 @@ var (
 	title  = regexp.MustCompile("^(title[0-9]*) (.+)$")
 )
 
-func Parse(txt string) (*Command, error) {
+func Parse(txt, font string) (*Command, error) {
 	switch {
 	case subpat.MatchString(txt):
 		fs := subpat.FindStringSubmatch(txt)
-		return CommandSubstitute(fs[1], tex2svg(fs[2]))
+		return CommandSubstitute(fs[1], tex2svg(fs[2], font))
 	case label.MatchString(txt):
 		fs := label.FindStringSubmatch(txt)
-		return CommandSubstitute(fmt.Sprintf("$%s$", fs[1]), tex2svg(fs[2]))
+		return CommandSubstitute(fmt.Sprintf("$%s$", fs[1]), tex2svg(fs[2], font))
 	case title.MatchString(txt):
 		fs := title.FindStringSubmatch(txt)
 		return CommandSubstitute(fmt.Sprintf("$%s$", fs[1]), fs[2])
