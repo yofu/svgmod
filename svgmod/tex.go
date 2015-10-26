@@ -73,13 +73,10 @@ func tex2svg(txt, font string) string {
 			if inbrace {
 				tmp = append(tmp, s)
 			} else {
-				if len(tmp) != 0 {
-					rtn = append(rtn, interpret(string(tmp), mode))
-					tmp = []rune{' '}
-					mode = NORMAL
-				} else {
-					tmp = []rune{' '}
-				}
+				rtn = append(rtn, interpret(string(tmp), mode))
+				rtn = append(rtn, " ")
+				tmp = []rune{}
+				mode= NORMAL
 			}
 		case '{':
 			rtn = append(rtn, interpret(string(tmp), mode))
