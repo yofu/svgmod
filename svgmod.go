@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/yofu/svgmod/svgmod"
@@ -58,6 +59,9 @@ func parseScript(fn, font string) ([]*svgmod.Command, error) {
 	for s.Scan() {
 		ct := s.Text()
 		if strings.HasPrefix(ct, "#") {
+			continue
+		}
+		if ok, _ := regexp.MatchString("^ *$", ct); ok {
 			continue
 		}
 		c, err := svgmod.Parse(strings.TrimLeft(ct, " "), font)

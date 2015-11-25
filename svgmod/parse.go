@@ -27,6 +27,6 @@ func Parse(txt, font string) (*Command, error) {
 		fs := title.FindStringSubmatch(txt)
 		return CommandSubstitute(fmt.Sprintf("$%s$", fs[1]), fs[2])
 	default:
-		return nil, nil
+		return nil, fmt.Errorf("unknown command")
 	}
 }
